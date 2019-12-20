@@ -16,19 +16,30 @@ limitations under the License.
 package v1alpha1
 
 import (
+	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
-// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
-
 // FreeIpaIssuerSpec defines the desired state of FreeIpaIssuer
 type FreeIpaIssuerSpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
+	// URL is the base URL for the FreeIPA instance.
+	URL string `json:"foo,omitempty"`
 
-	// Foo is an example field of FreeIpaIssuer. Edit FreeIpaIssuer_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	// CABundle is a base64 encoded TLS certificate used to verify connections
+	// to the FreeIpa server. If not set the system root certificates
+	// are used to validate the TLS connection.
+	// +optional
+	CABundle []byte `json:"caBundle,omitempty"`
+
+	Auth FreeIpaAuthSpec `json:"auth"`
+}
+
+type FreeIpaAuthSpec struct {
+	UserPass FreeIpaUserPassAuthSpec `json:"userPass"`
+}
+
+type FreeIpaUserPassAuthSpec struct {
+	SecretRef *v1.LocalObjectReference `json:"secretRef"`
 }
 
 // FreeIpaIssuerStatus defines the observed state of FreeIpaIssuer
