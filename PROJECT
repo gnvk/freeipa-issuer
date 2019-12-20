@@ -1,3 +1,7 @@
 domain: freeipa.org
 repo: freeipa-issuer
+resources:
+- group: freeipa.org
+  kind: FreeIpaIssuer
+  version: v1alpha1
 version: "2"
