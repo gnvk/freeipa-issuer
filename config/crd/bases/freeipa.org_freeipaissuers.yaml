@@ -1,0 +1,92 @@
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.2.4
+  creationTimestamp: null
+  name: freeipaissuers.freeipa.org
+spec:
+  group: freeipa.org
+  names:
+    kind: FreeIpaIssuer
+    listKind: FreeIpaIssuerList
+    plural: freeipaissuers
+    singular: freeipaissuer
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      description: FreeIpaIssuer is the Schema for the freeipaissuers API
+      properties:
+        apiVersion:
+          description: 'APIVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'Kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          description: FreeIpaIssuerSpec defines the desired state of FreeIpaIssuer
+          properties:
+            auth:
+              description: FreeIpaAuthSpec contains the supported authentication details
+                to FreeIpa
+              properties:
+                userPass:
+                  description: UserPass describes the user/password authentication
+                    to the FreeIpa server by referencing a secret by name
+                  properties:
+                    secretRef:
+                      description: LocalObjectReference contains enough information
+                        to let you locate the referenced object inside the same namespace.
+                      properties:
+                        name:
+                          description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                            TODO: Add other useful fields. apiVersion, kind, uid?'
+                          type: string
+                      type: object
+                  required:
+                  - secretRef
+                  type: object
+              required:
+              - userPass
+              type: object
+            caBundle:
+              description: CABundle is a base64 encoded TLS certificate used to verify
+                connections to the FreeIpa server. If not set the system root certificates
+                are used to validate the TLS connection.
+              format: byte
+              type: string
+            foo:
+              description: URL is the base URL for the FreeIPA instance.
+              type: string
+            host:
+              type: string
+            realm:
+              type: string
+          required:
+          - auth
+          - host
+          - realm
+          type: object
+        status:
+          description: FreeIpaIssuerStatus defines the observed state of FreeIpaIssuer
+          type: object
+      type: object
+  version: v1alpha1
+  versions:
+  - name: v1alpha1
+    served: true
+    storage: true
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

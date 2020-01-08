@@ -1,0 +1,15 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: freeipa-cert
+spec:
+  secretName: freeipa-cert
+  commonName: <freeipa_cn>
+  dnsNames:
+    - <freeipa_host>
+  duration: 24h
+  renewBefore: 8h
+  issuerRef:
+    group: freeipa.org
+    kind: CertificateRequest
+    name: freeipaissuer-sample

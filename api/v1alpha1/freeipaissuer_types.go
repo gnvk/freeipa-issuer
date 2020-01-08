@@ -32,12 +32,20 @@ type FreeIpaIssuerSpec struct {
 	CABundle []byte `json:"caBundle,omitempty"`
 
 	Auth FreeIpaAuthSpec `json:"auth"`
+
+	Host  string `json:"host"`
+	Realm string `json:"realm"`
 }
 
+// FreeIpaAuthSpec contains the supported authentication details to FreeIpa
 type FreeIpaAuthSpec struct {
+	// UserPass describes the user/password authentication to the FreeIpa server
+	// by referencing a secret by name
 	UserPass FreeIpaUserPassAuthSpec `json:"userPass"`
 }
 
+// FreeIpaUserPassAuthSpec contains a secret reference
+// The secret should hold the username + password to the FreeIpa server
 type FreeIpaUserPassAuthSpec struct {
 	SecretRef *v1.LocalObjectReference `json:"secretRef"`
 }

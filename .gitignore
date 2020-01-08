@@ -22,3 +22,8 @@ bin
 *.swp
 *.swo
 *~
+.vscode/*
+!.vscode/launch.json
+
+# actual secrets
+config/samples/actual-*.yaml

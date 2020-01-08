@@ -20,6 +20,9 @@ import (
 	"os"
 
 	freeipaorgv1alpha1 "freeipa-issuer/api/v1alpha1"
+	cmapi "github.com/jetstack/cert-manager/pkg/apis/certmanager/v1alpha2"
+
+	"freeipa-issuer/controllers"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
@@ -38,6 +41,7 @@ func init() {
 	_ = clientgoscheme.AddToScheme(scheme)
 
 	_ = freeipaorgv1alpha1.AddToScheme(scheme)
+	_ = cmapi.AddToScheme(scheme)
 	// +kubebuilder:scaffold:scheme
 }
 
@@ -64,6 +68,15 @@ func main() {
 		os.Exit(1)
 	}
 
+	if err = (&controllers.CertificateRequestReconciler{
+		Client:   mgr.GetClient(),
+		Log:      ctrl.Log.WithName("controllers").WithName("CertificateRequest"),
+		Scheme:   mgr.GetScheme(),
+		Recorder: mgr.GetEventRecorderFor("certificaterequests-controller"),
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "CertificateRequest")
+		os.Exit(1)
+	}
 	// +kubebuilder:scaffold:builder
 
 	setupLog.Info("starting manager")

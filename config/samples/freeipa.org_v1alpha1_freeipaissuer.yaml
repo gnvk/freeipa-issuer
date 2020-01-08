@@ -1,7 +1,13 @@
-apiVersion: freeipa.org.freeipa.org/v1alpha1
+apiVersion: freeipa.org/v1alpha1
 kind: FreeIpaIssuer
 metadata:
   name: freeipaissuer-sample
 spec:
-  # Add fields here
-  foo: bar
+  url: url
+  caBundle: Y2EuY3J0Cg==
+  host: <ipa-server-host>
+  realm: <realm>
+  auth:
+    userPass:
+      secretRef:
+        name: freeipa-auth
